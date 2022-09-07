@@ -1,0 +1,43 @@
+.img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid black;
+  box-shadow: 0 0 10px black;
+}
+
+.card {
+  width: 100%;
+  height: 7rem;
+  border: 1px solid white;
+  border-radius: 0.3rem;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  max-width: 500px;
+}
+
+.quantInput {
+  width: 5ch;
+}
+
+.itemContainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  height: 75vh;
+  overflow-y: scroll;
+}
+
+.errorText {
+  text-align: center;
+}
+
+.navButtons {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
