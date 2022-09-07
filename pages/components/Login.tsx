@@ -17,8 +17,7 @@ function Login() {
       {!isLoggedIn && (
         <input
           type='password'
-          name='password'
-          placeholder='password'
+          placeholder='Top Secret Password'
           value={passwordInput}
           onChange={(e) => setPasswordInput(e.target.value)}
           className={loginStyles.input}
