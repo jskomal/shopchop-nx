@@ -14,28 +14,34 @@ function Login() {
   }
   return (
     <div className={loginStyles.container}>
-      <input
-        type='password'
-        name='password'
-        placeholder='Please input your password'
-        value={passwordInput}
-        onChange={(e) => setPasswordInput(e.target.value)}
-        className={loginStyles.input}
-      />
-      <button
-        className={loginStyles.button}
-        onClick={() => validatePassword(passwordInput)}
-      >
-        Submit
-      </button>
+      {!isLoggedIn && (
+        <input
+          type='password'
+          name='password'
+          placeholder='password'
+          value={passwordInput}
+          onChange={(e) => setPasswordInput(e.target.value)}
+          className={loginStyles.input}
+        />
+      )}
+      {!isLoggedIn && (
+        <button
+          className={loginStyles.button}
+          onClick={() => validatePassword(passwordInput)}
+        >
+          Submit
+        </button>
+      )}
       {isLoggedIn && (
-        <button>
+        <button className={loginStyles.button}>
           <Link href='/create'>Create a Shopping List</Link>
         </button>
       )}
-      <button>
-        <Link href='/my-lists'>Shop</Link>
-      </button>
+      {isLoggedIn && (
+        <button className={loginStyles.button}>
+          <Link href='/my-lists'>Shop</Link>
+        </button>
+      )}
     </div>
   )
 }
