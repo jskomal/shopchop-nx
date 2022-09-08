@@ -7,16 +7,19 @@ type CartItemProps = {
   item: TItem
 }
 
-function ItemToBuy({ item }: CartItemProps) {
+function CartItem({ item }: CartItemProps) {
   return (
     <div className={listStyles.card}>
       <img src={item.img} alt={item.name} className={listStyles.img} />
-      <p>{item.name}</p>
+      <div className={listStyles.namePair}>
+        <p>{item.name}</p>
+        <p>Quantity: {item.latest_quantity_purchased}</p>
+      </div>
       <button>Remove from List</button>
     </div>
   )
 }
 
-export default ItemToBuy
+export default CartItem
 
 // Add quantity Changer
