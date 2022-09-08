@@ -6,3 +6,9 @@ export type TItem = {
   latest_quantity_purchased: number
   total_quantity_purchased: number
 }
+
+export type TList = {
+  items: TItem[]
+  name: string
+  comment: string
+}
