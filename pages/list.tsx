@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { TItem, TList } from '../types'
 import Header from './components/Header'
+import CartItem from './components/CartItem'
+
+import listStyles from '../styles/list.module.css'
 
 function list() {
   const [currentList, setCurrentList] = useState<TItem[]>([])
@@ -28,26 +31,38 @@ function list() {
     }, 3000)
   }
 
+  const mappedItems =
+    currentList.length &&
+    currentList.map((item) => <CartItem item={item} key={item.id} />)
+
   return (
     <div>
       <Header />
-      <p style={{ textAlign: 'center' }}>{errorText}</p>
-      {/* Add Cart View Here */}
-      <input
-        type='text'
-        value={listName}
-        onChange={(e) => setListName(e.target.value)}
-        placeholder='Name This List'
-      />
-      <textarea
-        placeholder='Comments'
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-      ></textarea>
-      {!isCartEmpty && <button>Save List</button>}
-      <button>
-        <Link href='/create'>Add More Items</Link>
-      </button>
+      <p className={listStyles.errorText}>{errorText}</p>
+      <div className={listStyles.itemContainer}>{mappedItems}</div>
+      <div className={listStyles.endSection}>
+        <div className={listStyles.endPair}>
+          <input
+            type='text'
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+            placeholder='Name This List'
+            className={listStyles.input}
+          />
+          <textarea
+            placeholder='Comments'
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className={listStyles.comment}
+          ></textarea>
+        </div>
+        <div className={listStyles.buttonPair}>
+          {!isCartEmpty && <button>Save List</button>}
+          <button>
+            <Link href='/create'>Add More Items</Link>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
