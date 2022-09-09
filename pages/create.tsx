@@ -5,7 +5,7 @@ import { TItem } from '../types'
 import createStyles from '../styles/create.module.css'
 import CreatePageItem from './components/CreatePageItem'
 
-function create() {
+function Create() {
   const [items, setItems] = useState<TItem[]>([])
   const [filteredItems, setFilteredItems] = useState<TItem[]>([])
   const [errorText, setErrorText] = useState('\u00a0')
@@ -144,4 +144,4 @@ function create() {
   )
 }
 
-export default create
+export default Create

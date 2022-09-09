@@ -5,7 +5,7 @@ import listStyles from '../styles/list.module.css'
 import ListItem from './components/ListItem'
 import { supabase } from '../utils'
 
-function currentList() {
+function CurrentList() {
   const [currentList, setCurrentList] = useState<TItem[]>([])
   const [errorText, setErrorText] = useState('\u00a0')
   const [isCartEmpty, setIsCartEmpty] = useState(true)
@@ -117,4 +117,4 @@ function currentList() {
   )
 }
 
-export default currentList
+export default CurrentList

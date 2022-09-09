@@ -5,7 +5,7 @@ import ShoppingListPreview from './components/ShoppingListPreview'
 import dayjs from 'dayjs'
 import myListStyles from '../styles/myLists.module.css'
 
-function myLists() {
+function MyLists() {
   const [myLists, setMyLists] = useState<TAPIList[]>([])
 
   useEffect(() => {
@@ -44,4 +44,4 @@ function myLists() {
   )
 }
 
-export default myLists
+export default MyLists
