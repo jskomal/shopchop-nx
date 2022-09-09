@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { TItem, TList } from '../types'
 import listStyles from '../styles/list.module.css'
 import ListItem from './components/ListItem'
+import { supabase } from '../utils'
 
 function list() {
   const [currentList, setCurrentList] = useState<TItem[]>([])
@@ -10,17 +11,20 @@ function list() {
   const [isCartEmpty, setIsCartEmpty] = useState(true)
   const [listName, setListName] = useState('')
   const [comment, setComment] = useState('')
+  const [myLists, setMyLists] = useState<TList[]>([])
 
   useEffect(() => {
-    if (currentList.length) {
-      setIsCartEmpty(false)
-    }
+    //fetch currentList
     const localList = sessionStorage.getItem('list')
     if (typeof localList === 'string') {
       const parse = JSON.parse(localList)
       setCurrentList(parse)
-    } else {
-      setErrorText('There are no items in the list, go add some!')
+      setIsCartEmpty(false)
+    }
+    //fetch all lists
+    const allLists = localStorage.getItem('allLists')
+    if (typeof allLists === 'string') {
+      setMyLists(JSON.parse(allLists))
     }
   }, [])
 
@@ -37,6 +41,26 @@ function list() {
       sessionStorage.setItem('list', JSON.stringify(filtered))
       return [...filtered]
     })
+  }
+
+  const saveList = () => {
+    const newList = { items: currentList, name: listName, comment: comment }
+    if (!newList.name) {
+      handleErrorText('Please enter a name for this list!')
+    } else {
+      postList(newList)
+      setMyLists((prev) => {
+        localStorage.setItem('allLists', JSON.stringify([...prev, newList]))
+        return [...prev, newList]
+      })
+      handleErrorText(`Saved ${newList.name} to My Lists!`)
+    }
+  }
+
+  const postList = async (payload: TList) => {
+    const { data, error } = await supabase.from('MyLists').insert([payload])
+    if (error) throw Error(error.message)
+    console.log(data)
   }
 
   const mappedItems =
@@ -82,7 +106,7 @@ function list() {
             <button>
               <Link href='/create'>Add More Items</Link>
             </button>
-            <button>Save List</button>
+            <button onClick={saveList}>Save List</button>
           </div>
         )}
       </div>
