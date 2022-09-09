@@ -11,7 +11,6 @@ function CurrentList() {
   const [isCartEmpty, setIsCartEmpty] = useState(true)
   const [listName, setListName] = useState('')
   const [comment, setComment] = useState('')
-  const [myLists, setMyLists] = useState<TList[]>([])
 
   useEffect(() => {
     //fetch currentList
@@ -20,11 +19,6 @@ function CurrentList() {
       const parse = JSON.parse(localList)
       setCurrentList(parse)
       setIsCartEmpty(false)
-    }
-    //fetch all lists
-    const allLists = localStorage.getItem('allLists')
-    if (typeof allLists === 'string') {
-      setMyLists(JSON.parse(allLists))
     }
   }, [])
 
@@ -53,9 +47,6 @@ function CurrentList() {
       handleErrorText('Please enter a name for this list!')
     } else {
       postList(listToAdd)
-      setMyLists((prev) => {
-        return [...prev, listToAdd]
-      })
       handleErrorText(`Saved ${listToAdd.name} to My Lists!`)
     }
   }
@@ -63,7 +54,6 @@ function CurrentList() {
   const postList = async (payload: TList) => {
     const { data, error } = await supabase.from('MyLists').insert([payload])
     if (error) throw Error(error.message)
-    console.log(data)
   }
 
   const mappedItems =
