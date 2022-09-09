@@ -115,13 +115,12 @@ function create() {
       >
         clearSession
       </button> */}
-      <Header />
       <div className={createStyles.pageContainer}>
         <p className={createStyles.errorText}>{errorText}</p>
         <input
           className={createStyles.filterInput}
           type='text'
-          placeholder='Filter for Items'
+          placeholder='Filter items'
           onChange={handleFilter}
         />
         <div className={createStyles.itemContainer}>{mappedItems}</div>

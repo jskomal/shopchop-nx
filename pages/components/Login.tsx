@@ -15,7 +15,6 @@ function Login() {
   }
   return (
     <div className={loginStyles.container}>
-      <Header />
       {!isLoggedIn && (
         <input
           type='password'

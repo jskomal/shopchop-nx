@@ -36,7 +36,6 @@ function list() {
 
   return (
     <div>
-      <Header />
       <p className={listStyles.errorText}>{errorText}</p>
       <div className={listStyles.itemContainer}>{mappedItems}</div>
       <div className={listStyles.endSection}>
