@@ -14,7 +14,7 @@ function list() {
   const [comment, setComment] = useState('')
 
   useEffect(() => {
-    const localList = localStorage.getItem('list')
+    const localList = sessionStorage.getItem('list')
     if (typeof localList === 'string') {
       const parse = JSON.parse(localList)
       setCurrentList(parse)
