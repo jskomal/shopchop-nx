@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 import loginStyles from '../../styles/Login.module.css'
+import Header from './Header'
 
 function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -14,6 +15,7 @@ function Login() {
   }
   return (
     <div className={loginStyles.container}>
+      <Header />
       {!isLoggedIn && (
         <input
           type='password'
