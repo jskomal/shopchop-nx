@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils'
-import { TAPIList, TItem, TList } from '../types'
+import { TAPIList } from '../types'
 import ShoppingListPreview from './components/ShoppingListPreview'
 import dayjs from 'dayjs'
 import myListStyles from '../styles/myLists.module.css'
@@ -12,7 +12,7 @@ function myLists() {
     const localLists = localStorage.getItem('myLists')
     if (typeof localLists === 'string') {
       const parsed = JSON.parse(localLists)
-      if ((dayjs().isAfter(dayjs(parsed[parsed.length - 1].created_at)), 'hour')) {
+      if (dayjs().isAfter(dayjs(parsed[parsed.length - 1].created_at), 'hour')) {
         fetchLists()
       } else {
         setMyLists(parsed)
