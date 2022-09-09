@@ -35,13 +35,6 @@ function create() {
     }
   }, [list])
 
-  const handleErrorText = (input: string) => {
-    setErrorText(input)
-    setTimeout(() => {
-      setErrorText('\u00a0')
-    }, 3000)
-  }
-
   const fetchItems = async () => {
     let { data: Items, error } = await supabase.from('Items').select('*')
     if (error) throw Error(error.message)
@@ -50,6 +43,13 @@ function create() {
       setFilteredItems(Items)
       sessionStorage.setItem('fetch', JSON.stringify(Items))
     }
+  }
+
+  const handleErrorText = (input: string) => {
+    setErrorText(input)
+    setTimeout(() => {
+      setErrorText('\u00a0')
+    }, 3000)
   }
 
   const addToList = (id: number, quantity: number) => {
