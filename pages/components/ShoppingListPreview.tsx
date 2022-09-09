@@ -7,7 +7,7 @@ type ShoppingListProps = {
   list: TAPIList
 }
 
-function ShoppingList({ list }: ShoppingListProps) {
+function ShoppingListPreview({ list }: ShoppingListProps) {
   const itemPreview = list.items.map((item) => item.name).join(', ')
 
   return (
@@ -26,4 +26,4 @@ function ShoppingList({ list }: ShoppingListProps) {
   )
 }
 
-export default ShoppingList
+export default ShoppingListPreview

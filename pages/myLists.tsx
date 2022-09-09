@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils'
 import { TAPIList, TItem, TList } from '../types'
-import ShoppingList from './components/ShoppingList'
+import ShoppingListPreview from './components/ShoppingListPreview'
 import dayjs from 'dayjs'
 import myListStyles from '../styles/myLists.module.css'
 
@@ -31,7 +31,7 @@ function myLists() {
 
   const mappedLists =
     myLists.length > 0 ? (
-      myLists.map((list) => <ShoppingList list={list} key={list.id} />)
+      myLists.map((list) => <ShoppingListPreview list={list} key={list.id} />)
     ) : (
       <p>No lists here!</p>
     )
