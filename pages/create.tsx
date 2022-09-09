@@ -77,6 +77,7 @@ function create() {
           handleErrorText(`Added ${quantity} ${itemToAdd.name} to the cart!`)
           return [...prevList, { ...itemToAdd }]
         } else {
+          handleErrorText('Something went horribly wrong')
           return [...prevList]
         }
       }
@@ -109,20 +110,25 @@ function create() {
     if (itemsToShow.length) {
       setFilteredItems(itemsToShow)
     } else {
-      handleErrorText(`No items with a name containing ${e.target.value}.`)
+      handleErrorText(`No items with a name containing ${e.target.value} found.`)
     }
   }
 
-  // figure out how to add the list quantity for this item here
   const mappedItems = items.length ? (
-    filteredItems.map((item) => (
-      <CreatePageItem
-        handleErrorText={handleErrorText}
-        item={item}
-        key={item.id}
-        addToList={addToList}
-      />
-    ))
+    filteredItems.map((item) => {
+      const listQuantity = list.find(
+        (listItem) => item.id === listItem.id
+      )?.latest_quantity_purchased
+      return (
+        <CreatePageItem
+          handleErrorText={handleErrorText}
+          item={item}
+          key={item.id}
+          addToList={addToList}
+          listQuantity={listQuantity}
+        />
+      )
+    })
   ) : (
     <p style={{ textAlign: 'center' }}>Loading...</p>
   )
