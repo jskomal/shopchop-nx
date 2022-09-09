@@ -1,22 +1,32 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils'
-import { TAPIList, TItem } from '../types'
+import { TAPIList, TItem, TList } from '../types'
 import ShoppingList from './components/ShoppingList'
-
+import dayjs from 'dayjs'
 import myListStyles from '../styles/myLists.module.css'
 
 function myLists() {
   const [myLists, setMyLists] = useState<TAPIList[]>([])
 
   useEffect(() => {
-    fetchLists()
+    const localLists = localStorage.getItem('myLists')
+    if (typeof localLists === 'string') {
+      const parsed = JSON.parse(localLists)
+      if ((dayjs().isAfter(dayjs(parsed[parsed.length - 1].created_at)), 'hour')) {
+        fetchLists()
+      } else {
+        setMyLists(parsed)
+      }
+    } else {
+      fetchLists()
+    }
   }, [])
 
   const fetchLists = async () => {
     const { data: MyLists, error } = await supabase.from('MyLists').select('*')
     if (error) throw Error(error.message)
     setMyLists(MyLists)
-    console.log(MyLists)
+    localStorage.setItem('myLists', JSON.stringify(MyLists))
   }
 
   const mappedLists =
