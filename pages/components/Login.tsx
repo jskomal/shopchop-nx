@@ -59,7 +59,7 @@ function Login() {
       )}
       {isLoggedIn && (
         <button className={loginStyles.button}>
-          <Link href='/my-lists'>Shop</Link>
+          <Link href='/myLists'>Shop</Link>
         </button>
       )}
     </div>

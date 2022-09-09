@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { TList } from '../../types'
+import { TAPIList, TList } from '../../types'
 import myListStyles from '../../styles/myLists.module.css'
+import dayjs from 'dayjs'
 
 type ShoppingListProps = {
-  list: TList
+  list: TAPIList
 }
 
 function ShoppingList({ list }: ShoppingListProps) {
@@ -13,9 +14,13 @@ function ShoppingList({ list }: ShoppingListProps) {
     <Link href='/myList/[id]'>
       <div className={myListStyles.card}>
         <h3>{list.name}</h3>
+        <p>***</p>
         {list.comment && <p>{list.comment}</p>}
-        <p>{`${itemPreview.substring(0, 20)}...`}</p>
+        <p>
+          {itemPreview.length > 20 ? `${itemPreview.substring(0, 25)}...` : itemPreview}
+        </p>
         <p>{`${list.items.length} items`}</p>
+        <p>{`Created ${dayjs(list.created_at).format('dddd, MMMM D, YYYY')}`}</p>
       </div>
     </Link>
   )
