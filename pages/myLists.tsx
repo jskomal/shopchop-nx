@@ -5,8 +5,12 @@ import ShoppingListPreview from './components/ShoppingListPreview'
 import dayjs from 'dayjs'
 import myListStyles from '../styles/myLists.module.css'
 
-function MyLists() {
-  const [myLists, setMyLists] = useState<TAPIList[]>([])
+type MyListsProps = {
+  MyLists: TAPIList[]
+}
+
+function MyLists({ MyLists }: MyListsProps) {
+  const [myLists, setMyLists] = useState<TAPIList[]>(MyLists)
 
   useEffect(() => {
     const localLists = localStorage.getItem('myLists')
@@ -42,6 +46,15 @@ function MyLists() {
       <div>{mappedLists}</div>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const { data: MyLists, error } = await supabase.from('MyLists').select('*')
+  return {
+    props: {
+      MyLists,
+    },
+  }
 }
 
 export default MyLists
