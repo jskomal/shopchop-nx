@@ -82,25 +82,6 @@ function create() {
         }
       }
     })
-    if (quantity === 0) return
-    setItems((prev) => {
-      const itemToAdd = prev.find((item) => item.id === id)
-      if (itemToAdd) {
-        itemToAdd.latest_quantity_purchased = quantity
-        itemToAdd.total_quantity_purchased += quantity
-        const merged = prev.map((item) => {
-          if (item.id === itemToAdd.id) {
-            return itemToAdd
-          } else return item
-        })
-        sessionStorage.setItem('fetch', JSON.stringify(merged))
-        return [...merged]
-      } else {
-        handleErrorText(`Could not find item with id ${id}.`)
-        sessionStorage.setItem('fetch', JSON.stringify(prev))
-        return [...prev]
-      }
-    })
   }
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
