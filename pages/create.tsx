@@ -5,9 +5,13 @@ import { TItem } from '../types'
 import createStyles from '../styles/create.module.css'
 import CreatePageItem from './components/CreatePageItem'
 
-function Create() {
-  const [items, setItems] = useState<TItem[]>([])
-  const [filteredItems, setFilteredItems] = useState<TItem[]>([])
+type TStaticProps = {
+  Items: TItem[]
+}
+
+function Create({ Items }: TStaticProps) {
+  const [items, setItems] = useState<TItem[]>(Items)
+  const [filteredItems, setFilteredItems] = useState<TItem[]>(Items)
   const [errorText, setErrorText] = useState('\u00a0')
   const [list, setList] = useState<TItem[]>([])
   const isFirstLoad = useRef(true)
@@ -142,6 +146,15 @@ function Create() {
       </div>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  let { data: Items, error } = await supabase.from('Items').select('*')
+  return {
+    props: {
+      Items,
+    },
+  }
 }
 
 export default Create
