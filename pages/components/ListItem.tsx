@@ -1,4 +1,5 @@
 import { TItem } from '../../types'
+import Image from 'next/image'
 
 import listStyles from '../../styles/list.module.css'
 
@@ -10,7 +11,7 @@ type ListItemProps = {
 function ListItem({ item, removeItemFromList }: ListItemProps) {
   return (
     <div className={listStyles.card}>
-      <img src={item.img} alt={item.name} className={listStyles.img} />
+      <Image src={item.img} alt={item.name} className={listStyles.img} />
       <div className={listStyles.namePair}>
         <p>{item.name}</p>
         <p>Quantity: {item.latest_quantity_purchased}</p>

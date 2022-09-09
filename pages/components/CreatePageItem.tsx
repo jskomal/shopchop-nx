@@ -1,4 +1,5 @@
 import { TItem } from '../../types'
+import Image from 'next/image'
 
 import createStyles from '../../styles/create.module.css'
 
@@ -25,7 +26,7 @@ function CreatePageItem({
 
   return (
     <div className={createStyles.card}>
-      <img src={item.img} alt={item.name} className={createStyles.img} />
+      <Image src={item.img} alt={item.name} className={createStyles.img} />
       <p>{item.name}</p>
       <input
         type='number'
