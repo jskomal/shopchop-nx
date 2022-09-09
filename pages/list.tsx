@@ -31,8 +31,16 @@ function list() {
   }
 
   const mappedItems =
-    currentList.length &&
-    currentList.map((item) => <ListItem item={item} key={item.id} />)
+    currentList.length > 0 ? (
+      currentList.map((item) => <ListItem item={item} key={item.id} />)
+    ) : (
+      <div className={listStyles.itemContainer}>
+        <p>No Items in this list!</p>
+        <button>
+          <Link href='/create'>Go Back</Link>
+        </button>
+      </div>
+    )
 
   return (
     <div>
