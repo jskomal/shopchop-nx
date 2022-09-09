@@ -5,11 +5,10 @@
   border-radius: 0.3rem;
   display: grid;
   /* text-align: center; */
-  grid-template-columns: 1fr 1.3fr 0.8fr;
+  grid-template-columns: 1fr 1.3fr 1fr;
   place-items: center;
   gap: 0.5rem;
   padding: 0.7rem;
-  max-width: 500px;
 }
 
 .img {
@@ -22,17 +21,22 @@
 }
 
 .quantInput {
-  width: 8ch;
+  width: 9ch;
 }
 
 .itemContainer {
-  width: 100%;
+  width: 100vw;
+  max-width: 550px;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   height: 75vh;
   overflow-y: scroll;
   box-shadow: 0 10px 20px -10px black;
+}
+
+.itemContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .errorText {

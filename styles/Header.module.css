@@ -4,5 +4,9 @@
 }
 
 .tagline {
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hr {
+  margin-bottom: 1rem;
 }
