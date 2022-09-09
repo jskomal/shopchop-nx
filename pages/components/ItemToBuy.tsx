@@ -10,7 +10,9 @@ type ItemToBuyProps = {
 }
 
 function ItemToBuy({ item, handleErrorText, addToList }: ItemToBuyProps) {
-  const [quantityToBuy, setQuantityToBuy] = useState<number | string>('')
+  const [quantityToBuy, setQuantityToBuy] = useState<number | string>(
+    item.latest_quantity_purchased || ''
+  )
 
   const handleQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (parseInt(e.target.value) < 0) {
