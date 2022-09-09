@@ -135,7 +135,7 @@ function create() {
         <div className={createStyles.itemContainer}>{mappedItems}</div>
         <div className={createStyles.navButtons}>
           <button>
-            <Link href='/list'>View List</Link>
+            <Link href='/currentList'>View List</Link>
           </button>
           <button>Add new Item</button>
         </div>

@@ -5,7 +5,7 @@ import listStyles from '../styles/list.module.css'
 import ListItem from './components/ListItem'
 import { supabase } from '../utils'
 
-function list() {
+function currentList() {
   const [currentList, setCurrentList] = useState<TItem[]>([])
   const [errorText, setErrorText] = useState('\u00a0')
   const [isCartEmpty, setIsCartEmpty] = useState(true)
@@ -44,16 +44,19 @@ function list() {
   }
 
   const saveList = () => {
-    const newList = { items: currentList, name: listName, comment: comment }
-    if (!newList.name) {
+    const listToAdd: TList = {
+      items: currentList,
+      name: listName,
+      comment: comment,
+    }
+    if (!listToAdd.name) {
       handleErrorText('Please enter a name for this list!')
     } else {
-      postList(newList)
+      postList(listToAdd)
       setMyLists((prev) => {
-        localStorage.setItem('allLists', JSON.stringify([...prev, newList]))
-        return [...prev, newList]
+        return [...prev, listToAdd]
       })
-      handleErrorText(`Saved ${newList.name} to My Lists!`)
+      handleErrorText(`Saved ${listToAdd.name} to My Lists!`)
     }
   }
 
@@ -114,4 +117,4 @@ function list() {
   )
 }
 
-export default list
+export default currentList
