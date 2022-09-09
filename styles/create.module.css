@@ -5,7 +5,7 @@
   border-radius: 0.3rem;
   display: grid;
   /* text-align: center; */
-  grid-template-columns: 1fr 1.3fr 0.8fr 0.8fr;
+  grid-template-columns: 1fr 1.3fr 0.8fr;
   place-items: center;
   gap: 0.5rem;
   padding: 0.7rem;
