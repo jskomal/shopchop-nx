@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { supabase } from '../utils'
 import { TItem } from '../types'
-import ItemToBuy from './components/ItemToBuy'
 import Header from './components/Header'
 import createStyles from '../styles/create.module.css'
+import CreatePageItem from './components/CreatePageItem'
 
 function create() {
   const [items, setItems] = useState<TItem[]>([])
@@ -59,7 +59,11 @@ function create() {
         itemToAdd.latest_quantity_purchased = quantity
         itemToAdd.total_quantity_purchased += quantity
         setList((prev) => {
-          return [...prev, { ...itemToAdd }]
+          const indexOfFound = list.findIndex((item) => item.id == id)
+          if (indexOfFound !== -1) {
+            prev[indexOfFound] = itemToAdd
+            return [...prev]
+          } else return [...prev, { ...itemToAdd }]
         })
         const merged = prev.map((item) => {
           if (item.id === itemToAdd.id) {
@@ -79,7 +83,7 @@ function create() {
 
   const mappedItems = items.length ? (
     filteredItems.map((item) => (
-      <ItemToBuy
+      <CreatePageItem
         handleErrorText={handleErrorText}
         item={item}
         key={item.id}

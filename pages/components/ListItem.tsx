@@ -3,11 +3,11 @@ import { TItem } from '../../types'
 
 import listStyles from '../../styles/list.module.css'
 
-type CartItemProps = {
+type ListItemProps = {
   item: TItem
 }
 
-function CartItem({ item }: CartItemProps) {
+function ListItem({ item }: ListItemProps) {
   return (
     <div className={listStyles.card}>
       <img src={item.img} alt={item.name} className={listStyles.img} />
@@ -20,6 +20,6 @@ function CartItem({ item }: CartItemProps) {
   )
 }
 
-export default CartItem
+export default ListItem
 
 // Add quantity Changer

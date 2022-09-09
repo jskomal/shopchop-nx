@@ -2,9 +2,8 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { TItem, TList } from '../types'
 import Header from './components/Header'
-import CartItem from './components/CartItem'
-
 import listStyles from '../styles/list.module.css'
+import ListItem from './components/ListItem'
 
 function list() {
   const [currentList, setCurrentList] = useState<TItem[]>([])
@@ -33,7 +32,7 @@ function list() {
 
   const mappedItems =
     currentList.length &&
-    currentList.map((item) => <CartItem item={item} key={item.id} />)
+    currentList.map((item) => <ListItem item={item} key={item.id} />)
 
   return (
     <div>
