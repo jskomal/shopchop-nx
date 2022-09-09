@@ -10,5 +10,10 @@ export type TItem = {
 export type TList = {
   items: TItem[]
   name: string
-  comment: string
+  comment?: string
+}
+
+export interface TAPIList extends TList {
+  id: number
+  created_at: string
 }
