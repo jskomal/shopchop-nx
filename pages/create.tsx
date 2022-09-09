@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { supabase } from '../utils'
 import { TItem } from '../types'
-import Header from './components/Header'
 import createStyles from '../styles/create.module.css'
 import CreatePageItem from './components/CreatePageItem'
 
@@ -53,24 +52,46 @@ function create() {
   }
 
   const addToList = (id: number, quantity: number) => {
+    setList((prevList) => {
+      const indexOfFound = prevList.findIndex((item) => item.id == id)
+      if (quantity === 0 && indexOfFound !== -1) {
+        prevList[indexOfFound].total_quantity_purchased -=
+          prevList[indexOfFound].latest_quantity_purchased
+        prevList[indexOfFound].latest_quantity_purchased = 0
+        handleErrorText(`Removed ${prevList[indexOfFound].name} from cart!`)
+        const filtered = prevList.filter((item) => item.id !== id)
+        return [...filtered]
+      } else if (indexOfFound > -1) {
+        prevList[indexOfFound].latest_quantity_purchased = quantity
+        prevList[indexOfFound].total_quantity_purchased += quantity
+        handleErrorText(
+          `Updated ${prevList[indexOfFound].name}'s quantity to ${quantity}!`
+        )
+        return [...prevList]
+      } else {
+        const dangerouslyMutableItem = items.find((item) => item.id === id)
+        if (dangerouslyMutableItem) {
+          const itemToAdd = { ...dangerouslyMutableItem }
+          itemToAdd.latest_quantity_purchased = quantity
+          itemToAdd.total_quantity_purchased += quantity
+          handleErrorText(`Added ${quantity} ${itemToAdd.name} to the cart!`)
+          return [...prevList, { ...itemToAdd }]
+        } else {
+          return [...prevList]
+        }
+      }
+    })
+    if (quantity === 0) return
     setItems((prev) => {
       const itemToAdd = prev.find((item) => item.id === id)
       if (itemToAdd) {
         itemToAdd.latest_quantity_purchased = quantity
         itemToAdd.total_quantity_purchased += quantity
-        setList((prev) => {
-          const indexOfFound = list.findIndex((item) => item.id == id)
-          if (indexOfFound !== -1) {
-            prev[indexOfFound] = itemToAdd
-            return [...prev]
-          } else return [...prev, { ...itemToAdd }]
-        })
         const merged = prev.map((item) => {
           if (item.id === itemToAdd.id) {
             return itemToAdd
           } else return item
         })
-        handleErrorText(`Added ${quantity} ${itemToAdd.name} to the cart!`)
         sessionStorage.setItem('fetch', JSON.stringify(merged))
         return [...merged]
       } else {
@@ -81,6 +102,18 @@ function create() {
     })
   }
 
+  const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const itemsToShow = items.filter((item) =>
+      item.name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim())
+    )
+    if (itemsToShow.length) {
+      setFilteredItems(itemsToShow)
+    } else {
+      handleErrorText(`No items with a name containing ${e.target.value}.`)
+    }
+  }
+
+  // figure out how to add the list quantity for this item here
   const mappedItems = items.length ? (
     filteredItems.map((item) => (
       <CreatePageItem
@@ -93,17 +126,6 @@ function create() {
   ) : (
     <p style={{ textAlign: 'center' }}>Loading...</p>
   )
-
-  const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const itemsToShow = items.filter((item) =>
-      item.name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim())
-    )
-    if (itemsToShow.length) {
-      setFilteredItems(itemsToShow)
-    } else {
-      handleErrorText(`No items with a name containing ${e.target.value}.`)
-    }
-  }
 
   return (
     <div>
