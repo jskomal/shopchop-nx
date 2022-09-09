@@ -45,3 +45,12 @@
   height: 66vh;
   overflow-y: scroll;
 }
+
+.comment {
+  resize: none;
+}
+
+.noItems {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
