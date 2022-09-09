@@ -5,7 +5,7 @@ function Header() {
     <header className={styles.header}>
       <h1>ShopChop</h1>
       <p className={styles.tagline}>Shop Smart, Shop S-Mart</p>
-      <hr />
+      <hr className={styles.hr} />
     </header>
   )
 }
