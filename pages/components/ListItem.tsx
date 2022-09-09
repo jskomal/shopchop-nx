@@ -11,7 +11,14 @@ type ListItemProps = {
 function ListItem({ item, removeItemFromList }: ListItemProps) {
   return (
     <div className={listStyles.card}>
-      <Image src={item.img} alt={item.name} className={listStyles.img} />
+      <Image
+        src={item.img}
+        alt={item.name}
+        width={80}
+        height={80}
+        layout='fixed'
+        className={listStyles.img}
+      />
       <div className={listStyles.namePair}>
         <p>{item.name}</p>
         <p>Quantity: {item.latest_quantity_purchased}</p>

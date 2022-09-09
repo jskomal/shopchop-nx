@@ -26,7 +26,14 @@ function CreatePageItem({
 
   return (
     <div className={createStyles.card}>
-      <Image src={item.img} alt={item.name} className={createStyles.img} />
+      <Image
+        src={item.img}
+        width={80}
+        height={80}
+        layout='fixed'
+        alt={item.name}
+        className={createStyles.img}
+      />
       <p>{item.name}</p>
       <input
         type='number'
