@@ -63,10 +63,10 @@ function list() {
           ></textarea>
         </div>
         <div className={listStyles.buttonPair}>
-          {!isCartEmpty && <button>Save List</button>}
           <button>
             <Link href='/create'>Add More Items</Link>
           </button>
+          {!isCartEmpty && <button>Save List</button>}
         </div>
       </div>
     </div>
