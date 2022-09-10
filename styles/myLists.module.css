@@ -10,7 +10,6 @@
 }
 
 .card {
-  width: 100vw;
   border: 0.5px solid white;
   border-radius: 0.5rem;
   display: flex;
@@ -24,4 +23,9 @@
   border: 1px solid white;
   box-shadow: 0 0 5px white;
   background-color: grey;
+}
+
+.listsView {
+  height: 90vh;
+  overflow: scroll;
 }
