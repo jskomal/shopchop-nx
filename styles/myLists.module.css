@@ -26,6 +26,10 @@
 }
 
 .listsView {
-  height: 90vh;
+  height: 85vh;
   overflow: scroll;
+}
+
+.listsView::-webkit-scrollbar {
+  display: none;
 }
