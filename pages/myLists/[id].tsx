@@ -40,7 +40,7 @@ function SingleList({ post, error }: SingleListServerSideProps) {
         <p>Notes: {list.comment}</p>
       </div>
       <div className={shopListStyles.items}>{mappedList}</div>
-      <div>
+      <div className={shopListStyles.bottomButtons}>
         <button>Mark Complete</button>
       </div>
     </div>

@@ -17,6 +17,10 @@
   display: none;
 }
 
+.bottomButtons {
+  margin-bottom: 1rem;
+}
+
 .card {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr;
