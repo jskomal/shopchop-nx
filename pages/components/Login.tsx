@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 import loginStyles from '../../styles/Login.module.css'
@@ -7,7 +7,6 @@ function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [passwordInput, setPasswordInput] = useState('')
   const [errorText, setErrorText] = useState('\u00a0')
-  const submitRef = useRef(null)
 
   useEffect(() => {
     const isAuth = sessionStorage.getItem('isLoggedIn')
@@ -55,20 +54,19 @@ function Login() {
         <button
           className={loginStyles.button}
           onClick={() => validatePassword(passwordInput)}
-          ref={submitRef}
         >
           Submit
         </button>
       )}
       {isLoggedIn && (
-        <button className={loginStyles.button}>
-          <Link href='/create'>Create a Shopping List</Link>
-        </button>
+        <Link href='/create'>
+          <button className={loginStyles.button}>Create a Shopping List </button>
+        </Link>
       )}
       {isLoggedIn && (
-        <button className={loginStyles.button}>
-          <Link href='/myLists'>See Saved Lists</Link>
-        </button>
+        <Link href='/myLists'>
+          <button className={loginStyles.button}>See Saved Lists</button>
+        </Link>
       )}
     </div>
   )
