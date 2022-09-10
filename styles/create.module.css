@@ -4,8 +4,7 @@
   border: 0.5px solid white;
   border-radius: 0.3rem;
   display: grid;
-  /* text-align: center; */
-  grid-template-columns: 1fr 1.3fr 1fr;
+  grid-template-columns: 1fr 1.5fr 1fr;
   place-items: center;
   gap: 0.5rem;
   padding: 0.7rem;
