@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { supabase } from '../utils'
+import { supabase, debounce } from '../utils'
 import { TItem } from '../types'
 import createStyles from '../styles/create.module.css'
 import currentListContext from '../context/currentListContext'
@@ -23,14 +23,6 @@ function Create({ Items, error }: TStaticProps) {
     setTimeout(() => {
       setErrorText('\u00a0')
     }, 3000)
-  }
-
-  const debounce = (fn: Function, ms = 400) => {
-    let timeoutId: ReturnType<typeof setTimeout>
-    return function (this: any, ...args: any[]) {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => fn.apply(this, args), ms)
-    }
   }
 
   const addToList = (itemToAdd: TItem, quantity: number) => {
