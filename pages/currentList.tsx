@@ -49,6 +49,9 @@ function CurrentList() {
     } else {
       postList(listToAdd)
       handleErrorText(`Saved ${listToAdd.name} to My Lists!`)
+      setCurrentList([])
+      setIsCartEmpty(true)
+      sessionStorage.removeItem('list')
     }
   }
 
@@ -114,6 +117,9 @@ function CurrentList() {
           <div className={listStyles.buttonPair}>
             <button>
               <Link href='/create'>Add More Items</Link>
+            </button>
+            <button>
+              <Link href='/myLists'>See Saved Lists</Link>
             </button>
             <button onClick={saveList}>Save List</button>
           </div>
