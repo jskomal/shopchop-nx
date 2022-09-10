@@ -1,49 +1,42 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
+import { GetServerSideProps } from 'next'
 import { TAPIList } from '../../types'
 
 import { supabase } from '../../utils'
 
-function SingleList() {
-  const [list, setList] = useState<TAPIList>()
+type SingleListServerSideProps = {
+  post: TAPIList
+}
+
+function SingleList({ post }: SingleListServerSideProps) {
+  const [list, setList] = useState(post)
   const [errorMessage, setErrorMessage] = useState('')
 
-  const {
-    query: { id, post },
-  } = useRouter()
-
-  useEffect(() => {
-    if (typeof post === 'string') {
-      setList(JSON.parse(post))
-    }
-  }, [])
-
-  if (!list) {
+  if (!post) {
     return <p>{errorMessage}</p>
   }
 
   return <div>{list.name}</div>
 }
 
-// export async function getStaticPaths() {
-//   return {
-//     paths: [],
-//     fallback: 'blocking',
-//   }
-// }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let { data: MyLists, error } = await supabase
+    .from('MyLists')
+    .select('*')
+    .eq('id', context.query.id)
 
-// export async function getStaticProps() {
-// let { data: MyLists, error } = await supabase
-//   .from('MyLists')
-//   .select('*')
-//   .eq('id', context)
-
-//   return {
-//     props: {
-//       list: context,
-//     },
-//   }
-// }
+  if (MyLists) {
+    return {
+      props: {
+        post: MyLists[0],
+        error: error?.message || '',
+      },
+    }
+  } else {
+    return { props: { post: [] } }
+  }
+}
 
 export default SingleList
