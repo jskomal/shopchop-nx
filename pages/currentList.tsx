@@ -42,7 +42,7 @@ function CurrentList() {
     const listToAdd: TList = {
       items: currentList,
       name: listName,
-      comment: comment,
+      comment: comment
     }
     if (!listToAdd.name) {
       handleErrorText('Please enter a name for this list!')
@@ -117,12 +117,12 @@ function CurrentList() {
             <button>
               <Link href='/create'>Add More Items</Link>
             </button>
-            <button>
-              <Link href='/myLists'>See Saved Lists</Link>
-            </button>
             <button onClick={saveList}>Save List</button>
           </div>
         )}
+        <button>
+          <Link href='/myLists'>See Saved Lists</Link>
+        </button>
       </div>
     </div>
   )
