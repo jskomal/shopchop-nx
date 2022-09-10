@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 import loginStyles from '../../styles/Login.module.css'
@@ -8,6 +8,13 @@ function Login() {
   const [passwordInput, setPasswordInput] = useState('')
   const [errorText, setErrorText] = useState('\u00a0')
   const submitRef = useRef(null)
+
+  useEffect(() => {
+    const isAuth = sessionStorage.getItem('isLoggedIn')
+    if (typeof isAuth === 'string') {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const handleErrorText = (input: string) => {
     setErrorText(input)
@@ -19,6 +26,7 @@ function Login() {
   const validatePassword = (input: string) => {
     if (input === process.env.NEXT_PUBLIC_PASSWORD) {
       setIsLoggedIn(true)
+      sessionStorage.setItem('isLoggedIn', JSON.stringify(true))
     } else {
       handleErrorText('Incorrect Password')
     }
@@ -59,7 +67,7 @@ function Login() {
       )}
       {isLoggedIn && (
         <button className={loginStyles.button}>
-          <Link href='/myLists'>Shop</Link>
+          <Link href='/myLists'>See Saved Lists</Link>
         </button>
       )}
     </div>

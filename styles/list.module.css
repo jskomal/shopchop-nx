@@ -1,18 +1,27 @@
 .errorText {
   text-align: center;
 }
+.view {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
 .endSection,
 .endPair,
 .namePair {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .buttonPair {
+  width: 100vw;
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .img {
@@ -42,12 +51,19 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  height: 66vh;
+  height: 63vh;
   overflow-y: scroll;
+}
+
+.input {
+  width: 80vw;
+  margin-bottom: 1rem;
 }
 
 .comment {
   resize: none;
+  width: 80vw;
+  margin-bottom: 1rem;
 }
 
 .noItems {
