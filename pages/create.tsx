@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { supabase } from '../utils'
 import { TItem } from '../types'
 import createStyles from '../styles/create.module.css'
-import CreatePageItem from './components/CreatePageItem'
 
 type TStaticProps = {
   Items: TItem[]
@@ -65,6 +65,9 @@ function Create({ Items }: TStaticProps) {
         handleErrorText(`Removed ${prevList[indexOfFound].name} from cart!`)
         const filtered = prevList.filter((item) => item.id !== id)
         return [...filtered]
+      } else if (quantity < 0) {
+        handleErrorText('Please enter a positive value')
+        return [...prevList]
       } else if (indexOfFound > -1) {
         prevList[indexOfFound].latest_quantity_purchased = quantity
         prevList[indexOfFound].total_quantity_purchased += quantity
@@ -99,19 +102,31 @@ function Create({ Items }: TStaticProps) {
     }
   }
 
-  const mappedItems = items.length ? (
+  const mappedItems = Items.length ? (
     filteredItems.map((item) => {
       const listQuantity = list.find(
         (listItem) => item.id === listItem.id
       )?.latest_quantity_purchased
       return (
-        <CreatePageItem
-          handleErrorText={handleErrorText}
-          item={item}
-          key={item.id}
-          addToList={addToList}
-          listQuantity={listQuantity}
-        />
+        <div className={createStyles.card} key={item.id}>
+          <Image
+            src={item?.img}
+            width={80}
+            height={80}
+            layout='fixed'
+            alt={item?.name}
+            className={createStyles.img}
+          />
+          <p>{item.name}</p>
+          <input
+            type='number'
+            onChange={(e) => addToList(item.id, parseInt(e.target.value))}
+            className={createStyles.quantInput}
+            placeholder={
+              listQuantity !== undefined ? listQuantity.toString() : 'Quantity'
+            }
+          />
+        </div>
       )
     })
   ) : (
@@ -120,14 +135,14 @@ function Create({ Items }: TStaticProps) {
 
   return (
     <div>
-      {/* <button
+      <button
         onClick={() => {
           sessionStorage.clear()
           localStorage.clear()
         }}
       >
         clearSession
-      </button> */}
+      </button>
       <div className={createStyles.pageContainer}>
         <p className={createStyles.errorText}>{errorText}</p>
         <input

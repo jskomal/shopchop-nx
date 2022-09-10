@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { TItem, TList } from '../types'
 import listStyles from '../styles/list.module.css'
-import ListItem from './components/ListItem'
+// import ListItem from './components/ListItem'
 import { supabase } from '../utils'
 
 function CurrentList() {
@@ -59,7 +60,22 @@ function CurrentList() {
   const mappedItems =
     currentList.length > 0 ? (
       currentList.map((item) => (
-        <ListItem item={item} key={item.id} removeItemFromList={removeItemFromList} />
+        // <ListItem item={item} key={item.id} removeItemFromList={removeItemFromList} />
+        <div className={listStyles.card} key={item.id}>
+          <Image
+            src={item.img}
+            alt={item.name}
+            width={80}
+            height={80}
+            layout='fixed'
+            className={listStyles.img}
+          />
+          <div className={listStyles.namePair}>
+            <p>{item.name}</p>
+            <p>Quantity: {item?.latest_quantity_purchased}</p>
+          </div>
+          <button onClick={() => removeItemFromList(item?.id)}>Remove from List</button>
+        </div>
       ))
     ) : (
       <div className={listStyles.itemContainer}>

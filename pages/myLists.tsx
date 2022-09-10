@@ -1,7 +1,9 @@
+import Link from 'next/link'
+
 import { useState, useEffect } from 'react'
+
 import { supabase } from '../utils'
 import { TAPIList } from '../types'
-import ShoppingListPreview from './components/ShoppingListPreview'
 import dayjs from 'dayjs'
 import myListStyles from '../styles/myLists.module.css'
 
@@ -35,7 +37,25 @@ function MyLists({ MyLists }: MyListsProps) {
 
   const mappedLists =
     myLists.length > 0 ? (
-      myLists.map((list) => <ShoppingListPreview list={list} key={list.id} />)
+      myLists.map((list) => {
+        const itemPreview = list.items.map((item) => item.name).join(', ')
+        return (
+          <Link href='/myList/[id]' key={list.id}>
+            <div className={myListStyles.card}>
+              <h3>{list.name}</h3>
+              <p>***</p>
+              {list.comment && <p>{list.comment}</p>}
+              <p>
+                {itemPreview.length > 20
+                  ? `${itemPreview.substring(0, 25)}...`
+                  : itemPreview}
+              </p>
+              <p>{`${list.items.length} items`}</p>
+              <p>{`Created ${dayjs(list.created_at).format('dddd, MMMM D, YYYY')}`}</p>
+            </div>
+          </Link>
+        )
+      })
     ) : (
       <p>No lists here!</p>
     )
