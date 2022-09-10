@@ -33,40 +33,43 @@ function Create({ Items, error }: TStaticProps) {
     }
   }
 
-  const addToList = (id: number, quantity: number) => {
-    setList((prevList: TItem[]) => {
-      const indexOfFound = prevList.findIndex((item) => item.id == id)
-      if (quantity === 0 && indexOfFound !== -1) {
-        prevList[indexOfFound].total_quantity_purchased -=
-          prevList[indexOfFound].latest_quantity_purchased
-        prevList[indexOfFound].latest_quantity_purchased = 0
-        handleErrorText(`Removed ${prevList[indexOfFound].name} from cart!`)
-        const filtered = prevList.filter((item) => item.id !== id)
-        return [...filtered]
-      } else if (quantity < 0) {
-        handleErrorText('Please enter a positive value')
-        return [...prevList]
-      } else if (indexOfFound > -1) {
-        prevList[indexOfFound].latest_quantity_purchased = quantity
-        prevList[indexOfFound].total_quantity_purchased += quantity
-        handleErrorText(
-          `Updated ${prevList[indexOfFound].name}'s quantity to ${quantity}!`
-        )
-        return [...prevList]
-      } else {
-        const dangerouslyMutableItem = items.find((item) => item.id === id)
-        if (dangerouslyMutableItem) {
-          const itemToAdd = { ...dangerouslyMutableItem }
-          itemToAdd.latest_quantity_purchased = quantity
-          itemToAdd.total_quantity_purchased += quantity
-          handleErrorText(`Added ${quantity} ${itemToAdd.name} to the cart!`)
-          return [...prevList, { ...itemToAdd }]
-        } else {
-          handleErrorText('Something went horribly wrong')
-          return [...prevList]
-        }
-      }
-    })
+  const addToList = (itemToAdd: TItem, quantity: number) => {
+    const indexOfFound = list.findIndex((item) => item.id == itemToAdd.id)
+    switch (true) {
+      case quantity === 0:
+        setList((prev) => {
+          const filtered = prev.filter((item) => item.id !== itemToAdd.id)
+          return [...filtered]
+        })
+        handleErrorText(`removed ${itemToAdd.name} from the shopping list`)
+        break
+      case quantity < 0:
+        handleErrorText('Please enter a positive number')
+        break
+      case indexOfFound > -1:
+        setList((prev) => {
+          prev[indexOfFound].total_quantity_purchased -=
+            prev[indexOfFound].latest_quantity_purchased
+          prev[indexOfFound].latest_quantity_purchased = quantity
+          prev[indexOfFound].total_quantity_purchased += quantity
+          return [...prev]
+        })
+        handleErrorText(`Updated ${itemToAdd.name}'s quantity to ${quantity}`)
+        break
+      case indexOfFound === -1:
+        setList((prev) => [
+          ...prev,
+          {
+            ...itemToAdd,
+            latest_quantity_purchased: quantity,
+            total_quantity_purchased: itemToAdd.total_quantity_purchased + quantity
+          }
+        ])
+        handleErrorText(`Added ${quantity} ${itemToAdd.name} to the shopping list`)
+        break
+      default:
+        handleErrorText('Something went very very wrong')
+    }
   }
 
   const debounceAddToList = debounce(addToList)
@@ -100,7 +103,7 @@ function Create({ Items, error }: TStaticProps) {
           <p>{item.name}</p>
           <input
             type='number'
-            onChange={(e) => debounceAddToList(item.id, parseInt(e.target.value))}
+            onChange={(e) => debounceAddToList(item, parseInt(e.target.value))}
             className={createStyles.quantInput}
             placeholder={
               listQuantity !== undefined ? listQuantity.toString() : 'Quantity'
