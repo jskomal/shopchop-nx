@@ -20,7 +20,7 @@ function MyLists({ MyLists }: MyListsProps) {
           <Link
             href={{
               pathname: '/myLists/[id]',
-              query: { id: list.id, post: JSON.stringify(list) },
+              query: { id: list.id },
             }}
             key={list.id}
           >
