@@ -1,52 +1,22 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useContext } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { supabase } from '../utils'
 import { TItem } from '../types'
 import createStyles from '../styles/create.module.css'
+import currentListContext from '../context/currentListContext'
 
 type TStaticProps = {
   Items: TItem[]
+  error: string
 }
 
-function Create({ Items }: TStaticProps) {
-  const [items, setItems] = useState<TItem[]>(Items)
+function Create({ Items, error }: TStaticProps) {
+  const [items] = useState<TItem[]>(Items)
   const [filteredItems, setFilteredItems] = useState<TItem[]>(Items)
-  const [errorText, setErrorText] = useState('\u00a0')
-  const [list, setList] = useState<TItem[]>([])
-  const isFirstLoad = useRef(true)
-
-  useEffect(() => {
-    const fetch = sessionStorage.getItem('fetch')
-    if (typeof fetch === 'string') {
-      const parsed = JSON.parse(fetch)
-      setItems(parsed)
-      setFilteredItems(parsed)
-    } else {
-      fetchItems()
-    }
-  }, [])
-
-  useEffect(() => {
-    const localList = sessionStorage.getItem('list')
-    if (typeof localList === 'string' && isFirstLoad.current) {
-      const parse = JSON.parse(localList)
-      setList(parse)
-      isFirstLoad.current = false
-    } else {
-      sessionStorage.setItem('list', JSON.stringify(list))
-    }
-  }, [list])
-
-  const fetchItems = async () => {
-    let { data: Items, error } = await supabase.from('Items').select('*')
-    if (error) throw Error(error.message)
-    if (Items) {
-      setItems(Items)
-      setFilteredItems(Items)
-      sessionStorage.setItem('fetch', JSON.stringify(Items))
-    }
-  }
+  const [errorText, setErrorText] = useState(error || '\u00a0')
+  const listContext = useContext(currentListContext)
+  const { list, setList } = listContext
 
   const handleErrorText = (input: string) => {
     setErrorText(input)
@@ -55,8 +25,16 @@ function Create({ Items }: TStaticProps) {
     }, 3000)
   }
 
+  const debounce = (fn: Function, ms = 400) => {
+    let timeoutId: ReturnType<typeof setTimeout>
+    return function (this: any, ...args: any[]) {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => fn.apply(this, args), ms)
+    }
+  }
+
   const addToList = (id: number, quantity: number) => {
-    setList((prevList) => {
+    setList((prevList: TItem[]) => {
       const indexOfFound = prevList.findIndex((item) => item.id == id)
       if (quantity === 0 && indexOfFound !== -1) {
         prevList[indexOfFound].total_quantity_purchased -=
@@ -91,6 +69,8 @@ function Create({ Items }: TStaticProps) {
     })
   }
 
+  const debounceAddToList = debounce(addToList)
+
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
     const itemsToShow = items.filter((item) =>
       item.name.toLowerCase().trim().includes(e.target.value.toLowerCase().trim())
@@ -110,17 +90,17 @@ function Create({ Items }: TStaticProps) {
       return (
         <div className={createStyles.card} key={item.id}>
           <Image
-            src={item?.img}
+            src={item.img}
             width={80}
             height={80}
             layout='fixed'
-            alt={item?.name}
+            alt={item.name}
             className={createStyles.img}
           />
           <p>{item.name}</p>
           <input
             type='number'
-            onChange={(e) => addToList(item.id, parseInt(e.target.value))}
+            onChange={(e) => debounceAddToList(item.id, parseInt(e.target.value))}
             className={createStyles.quantInput}
             placeholder={
               listQuantity !== undefined ? listQuantity.toString() : 'Quantity'
@@ -168,7 +148,8 @@ export async function getStaticProps() {
   return {
     props: {
       Items,
-    },
+      error: error?.message || null
+    }
   }
 }
 
