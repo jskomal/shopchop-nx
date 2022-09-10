@@ -1,0 +1,39 @@
+.container {
+  height: 90vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.items {
+  height: 65vh;
+  overflow: scroll;
+  box-shadow: inset 0 0 10px black;
+}
+
+.item::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  place-items: center;
+  width: 100vw;
+  height: 10vh;
+  border: 0.5px solid white;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.img {
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.bought {
+  color: grey;
+  text-decoration: line-through;
+}
