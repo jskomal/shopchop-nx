@@ -135,14 +135,14 @@ function Create({ Items }: TStaticProps) {
 
   return (
     <div>
-      <button
+      {/* <button
         onClick={() => {
           sessionStorage.clear()
           localStorage.clear()
         }}
       >
         clearSession
-      </button>
+      </button> */}
       <div className={createStyles.pageContainer}>
         <p className={createStyles.errorText}>{errorText}</p>
         <input
