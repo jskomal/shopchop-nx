@@ -1,26 +1,22 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { supabase } from '../utils'
 
 import { TItem, TList } from '../types'
+import currentListContext from '../context/currentListContext'
 
 import listStyles from '../styles/list.module.css'
 
 function CurrentList() {
-  const [currentList, setCurrentList] = useState<TItem[]>([])
+  const { list, setList } = useContext(currentListContext)
   const [errorText, setErrorText] = useState('\u00a0')
   const [isCartEmpty, setIsCartEmpty] = useState(true)
   const [listName, setListName] = useState('')
   const [comment, setComment] = useState('')
 
   useEffect(() => {
-    const localList = sessionStorage.getItem('list')
-    if (typeof localList === 'string') {
-      const parse = JSON.parse(localList)
-      setCurrentList(parse)
-      setIsCartEmpty(false)
-    }
+    if (list.length) setIsCartEmpty(false)
   }, [])
 
   const handleErrorText = (input: string) => {
@@ -31,7 +27,7 @@ function CurrentList() {
   }
 
   const removeItemFromList = (itemID: number) => {
-    setCurrentList((prev) => {
+    setList((prev) => {
       const filtered = prev.filter((item) => item.id !== itemID)
       sessionStorage.setItem('list', JSON.stringify(filtered))
       return [...filtered]
@@ -40,7 +36,7 @@ function CurrentList() {
 
   const saveList = () => {
     const listToAdd: TList = {
-      items: currentList,
+      items: list,
       name: listName,
       comment: comment
     }
@@ -49,7 +45,7 @@ function CurrentList() {
     } else {
       postList(listToAdd)
       handleErrorText(`Saved ${listToAdd.name} to My Lists!`)
-      setCurrentList([])
+      setList([])
       setIsCartEmpty(true)
       sessionStorage.removeItem('list')
     }
@@ -61,8 +57,8 @@ function CurrentList() {
   }
 
   const mappedItems =
-    currentList.length > 0 ? (
-      currentList.map((item) => (
+    list.length > 0 ? (
+      list.map((item) => (
         <div className={listStyles.card} key={item.id}>
           <Image
             src={item.img}
@@ -82,9 +78,9 @@ function CurrentList() {
     ) : (
       <div className={listStyles.itemContainer}>
         <p className={listStyles.noItems}>No Items in this list!</p>
-        <button>
-          <Link href='/create'>Go Back</Link>
-        </button>
+        <Link href='/create'>
+          <button>Go Back</button>
+        </Link>
       </div>
     )
 
@@ -114,15 +110,15 @@ function CurrentList() {
         </div>
         {!isCartEmpty && (
           <div className={listStyles.buttonPair}>
-            <button>
-              <Link href='/create'>Add More Items</Link>
-            </button>
+            <Link href='/create'>
+              <button>Add More Items</button>
+            </Link>
             <button onClick={saveList}>Save List</button>
           </div>
         )}
-        <button>
-          <Link href='/myLists'>See Saved Lists</Link>
-        </button>
+        <Link href='/myLists'>
+          <button>See Saved Lists</button>
+        </Link>
       </div>
     </div>
   )
