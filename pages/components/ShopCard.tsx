@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { TItem } from '../../types'
-import { GetServerSideProps } from 'next'
 
 import shopListStyles from '../../styles/shopList.module.css'
 
