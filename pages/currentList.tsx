@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { TItem, TList } from '../types'
-import listStyles from '../styles/list.module.css'
-// import ListItem from './components/ListItem'
 import { supabase } from '../utils'
+
+import { TItem, TList } from '../types'
+
+import listStyles from '../styles/list.module.css'
 
 function CurrentList() {
   const [currentList, setCurrentList] = useState<TItem[]>([])
@@ -14,7 +15,6 @@ function CurrentList() {
   const [comment, setComment] = useState('')
 
   useEffect(() => {
-    //fetch currentList
     const localList = sessionStorage.getItem('list')
     if (typeof localList === 'string') {
       const parse = JSON.parse(localList)
@@ -63,7 +63,6 @@ function CurrentList() {
   const mappedItems =
     currentList.length > 0 ? (
       currentList.map((item) => (
-        // <ListItem item={item} key={item.id} removeItemFromList={removeItemFromList} />
         <div className={listStyles.card} key={item.id}>
           <Image
             src={item.img}
@@ -90,7 +89,7 @@ function CurrentList() {
     )
 
   return (
-    <div>
+    <div className={listStyles.view}>
       <p className={listStyles.errorText}>{errorText}</p>
       <div className={listStyles.itemContainer}>{mappedItems}</div>
       <div className={listStyles.endSection}>
