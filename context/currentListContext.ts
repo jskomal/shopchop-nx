@@ -3,7 +3,7 @@ import { createContext } from 'react'
 
 type TInitCurrentListContext = {
   list: TItem[]
-  setList: React.Dispatch<React.SetStateAction<TItem[]>> // This is narrowed to a React.Dispatch Action in _app.tsx
+  setList: React.Dispatch<React.SetStateAction<TItem[]>>
 }
 
 const init: TInitCurrentListContext = {
