@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useState, useEffect, useContext } from 'react'
 import { supabase } from '../utils'
 
-import { TItem, TList } from '../types'
+import { TList } from '../types'
 import currentListContext from '../context/currentListContext'
 
 import listStyles from '../styles/list.module.css'
