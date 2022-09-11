@@ -1,20 +1,35 @@
 import Image from 'next/image'
-import { useState } from 'react'
-import { TItem } from '../../types'
+import { TAPIList } from '../../types'
 
 import shopListStyles from '../../styles/shopList.module.css'
 
 type Props = {
-  item: TItem
   imgSrc: string
+  id: number
   name: string
   latest_quantity_purchased: number
+  isBought: boolean
+  setList: React.Dispatch<React.SetStateAction<TAPIList>>
 }
 
-function ShopCard({ item, imgSrc, name, latest_quantity_purchased }: Props) {
-  const [isBought, setIsBought] = useState(false)
-
-  const handleChange = () => setIsBought((prev) => !prev)
+function ShopCard({
+  id,
+  imgSrc,
+  name,
+  latest_quantity_purchased,
+  isBought,
+  setList
+}: Props) {
+  const handleChange = () =>
+    setList((prev) => {
+      const indexToChange = prev.items.findIndex((item) => item.id === id)
+      if (indexToChange > -1) {
+        prev.items[indexToChange].isBought = !prev.items[indexToChange].isBought
+        return { ...prev }
+      } else {
+        return { ...prev }
+      }
+    })
 
   return (
     <div className={shopListStyles.card}>
