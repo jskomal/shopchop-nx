@@ -5,6 +5,7 @@ export type TItem = {
   img: string
   latest_quantity_purchased: number
   total_quantity_purchased: number
+  isBought: boolean
 }
 
 export type TList = {
