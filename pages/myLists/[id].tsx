@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import dayjs from 'dayjs'
 
 import { GetServerSideProps } from 'next'
@@ -17,14 +17,44 @@ type SingleListServerSideProps = {
 function SingleList({ post, error }: SingleListServerSideProps) {
   const [list, setList] = useState(post)
   const [errorMessage, setErrorMessage] = useState(error)
+  const [completeButtonText, setCompleteButtonText] = useState(
+    'All items are not in cart, complete anyway?'
+  )
+  const completeButton = useRef(null)
+  const isConfirmed = useRef(false)
+  const [isListComplete, setIsListComplete] = useState(false)
+
+  useEffect(() => {
+    if (list.items.every((item) => item.isBought)) {
+      setCompleteButtonText('All items are in your cart!')
+      setIsListComplete(true)
+    } else {
+      setCompleteButtonText('All items are not in cart, complete anyway?')
+      setIsListComplete(false)
+    }
+  }, [list])
+
+  const markComplete = () => {
+    if (isListComplete) {
+      console.log('all good')
+      // handle the finishing
+    } else if (!isListComplete && !isConfirmed.current) {
+      setCompleteButtonText('Mark Completed')
+      isConfirmed.current = true
+    } else if (!isListComplete && isConfirmed.current)
+      console.log('Mark complete without all')
+    //handle finish
+  }
 
   const mappedList = list.items.map((item) => (
     <ShopCard
-      item={item}
       key={item.id}
+      id={item.id}
       imgSrc={item.img}
       name={item.name}
       latest_quantity_purchased={item.latest_quantity_purchased}
+      isBought={item.isBought}
+      setList={setList}
     />
   ))
 
@@ -41,7 +71,9 @@ function SingleList({ post, error }: SingleListServerSideProps) {
       </div>
       <div className={shopListStyles.items}>{mappedList}</div>
       <div className={shopListStyles.bottomButtons}>
-        <button>Mark Complete</button>
+        <button ref={completeButton} onClick={markComplete}>
+          {completeButtonText}
+        </button>
       </div>
     </div>
   )
